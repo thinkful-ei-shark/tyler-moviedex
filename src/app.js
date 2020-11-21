@@ -19,11 +19,9 @@ app.use(cors());
 app.use(express.json());
 
 app.use(function validateBearerToken(req,res,next) {
-  console.log('Validation Middleware');
   const apiToken = process.env.API_TOKEN;
   const authToken = req.get('Authorization');
   if (!authToken || authToken.split(' ')[1] !== apiToken) {
-    console.log(authToken,apiToken);
     return res.status(401).json({error: 'Unauthorized Request'});
   }
   next();
@@ -61,10 +59,9 @@ app.get('/movie', function handleGetMovie(req, res) {
 app.use(function errorHandler(error, req, res, next) {
   let response;
   if (NODE_ENV ==='production') {
-    response = {error: { message: 'serer error'}};
+    response = {error: { message: 'Server Error'}};
   }
   else {
-    console.error(error);
     response = {message: error.message, error};
   }
   res.status(500).json(response);
